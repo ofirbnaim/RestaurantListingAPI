@@ -11,6 +11,8 @@ namespace RestaurantListingAPI.DTO
         [Required]
         [StringLength(maximumLength: 15, ErrorMessage = "Address is too long")]
         public string Address { get; set; }
+        [Required]
+        public int RestaurantId { get; set; }
     }
 
     public class LocationDTO : CreateLocationDTO
