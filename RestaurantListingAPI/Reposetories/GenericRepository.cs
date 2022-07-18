@@ -16,7 +16,7 @@ namespace RestaurantListingAPI.Reposetories
         private DbSet<T> _db;
 
 
-        public GenericRepository(DatabaseContext databaseContext, DbSet<T> db)
+        public GenericRepository(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
             // set a specific db entity
@@ -34,10 +34,21 @@ namespace RestaurantListingAPI.Reposetories
             _db.RemoveRange(entities);
         }
 
-        public Task<T> Get(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, 
+        public async Task<T> Get(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, 
                             IIncludableQueryable<T, object>> include = null)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _db;
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
         public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, 
