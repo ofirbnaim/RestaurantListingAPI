@@ -1,9 +1,10 @@
 ﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace RestaurantListingAPI.Data
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<ApiUser>
     {
         //list all tables = DbSets
         public DbSet<Restaurant> Restaurants { get; set; }

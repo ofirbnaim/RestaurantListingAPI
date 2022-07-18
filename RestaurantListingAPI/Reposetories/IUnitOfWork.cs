@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantListingAPI.Reposetories
 {
-    public interface IUnitOfWork: IDisposable
+    public interface IUnitOfWork
     {
         public IGenericRepository<Restaurant> Restaurants { get;}
         public IGenericRepository<Location> Locations { get; }

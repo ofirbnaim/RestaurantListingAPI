@@ -12,6 +12,7 @@ using RestaurantListingAPI.Data;
 using RestaurantListingAPI.DTO;
 using RestaurantListingAPI.Ioc;
 using RestaurantListingAPI.Reposetories;
+using RestaurantListingAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace RestaurantListingAPI
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"));
             }, ServiceLifetime.Singleton);
 
+            services.AddAuthentication();
+            services.AddIdentityConfiguration();
 
             services.AddCors(options =>
             {

@@ -33,8 +33,8 @@ namespace RestaurantListingAPI.Controllers
             try
             {
                 _logger.LogDebug("[LocationsController:GetLocations] Started");
-                var locations = await _unitOfWork.Locations.GetAll();
-                
+                var locations = await _unitOfWork.Locations.GetAll(include: q => q.Include(location => location.Restaurant));
+
                 var mapped = _mapper.Map<IList<LocationDTO>>(locations);
                 _logger.LogDebug("[LocationsController:GetLocations] Finished");
                 return Ok(mapped);
@@ -65,24 +65,7 @@ namespace RestaurantListingAPI.Controllers
             }
         }
 
-        [HttpGet("GetLocationsAndIncludes")]
-        public async Task<IActionResult> GetLocationsAndIncludes()
-        {
-            try
-            {
-                _logger.LogDebug("[LocationsController:GetLocationsAndIncludes] Started");
-                var locations = await _unitOfWork.Locations.GetAll(include: q => q.Include(location => location.Restaurant));
-
-                var mapped = _mapper.Map<IList<LocationDTO>>(locations);
-                _logger.LogDebug("[LocationsController:GetLocationsAndIncludes] Finished");
-                return Ok(mapped);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "[LocationsController:GetLocationsAndIncludes] Failed to get Locations");
-                return BadRequest(ex);
-            }
-        }
+  
 
         [HttpGet("GetLocationById/{id:int}")]
         public async Task<IActionResult> GetLocationById(int id)

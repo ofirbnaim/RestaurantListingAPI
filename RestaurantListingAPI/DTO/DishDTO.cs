@@ -20,7 +20,7 @@ namespace RestaurantListingAPI.DTO
     public class DishDTO : CreateDishDTO
     {
         public int Id { get; set; }
-        public RestaurantDTO RestaurantDTO { get; set; }
+        public RestaurantDTO Restaurant { get; set; }
     }
 
     public class UpdateDishDTO : CreateDishDTO

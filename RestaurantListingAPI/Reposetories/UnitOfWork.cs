@@ -23,13 +23,7 @@ namespace RestaurantListingAPI.Reposetories
         public IGenericRepository<Dish> Dishes => _dishes ??= new GenericRepository<Dish>(_dbContext);
         
         
-        
-        public void Dispose()
-        {
-            _dbContext.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
+     
         public async Task Save()
         {
             await _dbContext.SaveChangesAsync();
