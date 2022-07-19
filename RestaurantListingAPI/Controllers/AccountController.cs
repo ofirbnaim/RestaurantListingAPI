@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using RestaurantListingAPI.Data;
 using RestaurantListingAPI.DTO;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestaurantListingAPI.Controllers
@@ -36,7 +37,7 @@ namespace RestaurantListingAPI.Controllers
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
-                }
+                }0542084444
 
                 ApiUser user = _mapper.Map<ApiUser>(registerUserDTO);
                 user.UserName = registerUserDTO.Email;
@@ -44,16 +45,19 @@ namespace RestaurantListingAPI.Controllers
 
                
 
-                var result = await _userManager.CreateAsync(user, registerUserDTO.Password);
+                var resultCreate = await _userManager.CreateAsync(user, registerUserDTO.Password);
 
-                if (result.Succeeded)
+                var resultRoles = await _userManager.AddToRolesAsync(user, registerUserDTO.Roles);
+
+
+                if (resultCreate.Succeeded && resultRoles.Succeeded)
                 {
                     _logger.LogDebug("[AccountController:Register] finished succesfully");
                     return StatusCode(StatusCodes.Status201Created, "❤ User Created succesfully");
                 }
                 else
                 {
-                    foreach(var error in result.Errors)
+                    foreach(var error in resultCreate.Errors.Concat(resultRoles.Errors))
                     {
                         ModelState.AddModelError(error.Code, error.Description);
                     }
