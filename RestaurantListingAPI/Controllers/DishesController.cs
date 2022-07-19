@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace RestaurantListingAPI.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin", Policy = "PayingOnly")]
         [HttpGet("GetAllDishes")]
         public async Task<IActionResult> GetAllDishes()
         {

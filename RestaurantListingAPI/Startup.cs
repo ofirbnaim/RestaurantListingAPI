@@ -39,7 +39,9 @@ namespace RestaurantListingAPI
 
             services.AddAuthentication();
             services.AddIdentityConfiguration();
+            services.AddAutorizationPolicies();
 
+            services.AddJWTAuthentication(Configuration);
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -63,6 +65,7 @@ namespace RestaurantListingAPI
             });
 
             services.AddTransient<ITransientService, OperationService>();
+            services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<IScopedService, OperationService>();
             services.AddSingleton<ISingletonService, OperationService>();
         }
@@ -77,10 +80,12 @@ namespace RestaurantListingAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantListingAPI v1"));
             }
-
+            app.UseCustomeExceptionHandler();
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
